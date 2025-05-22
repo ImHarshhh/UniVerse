@@ -16,7 +16,7 @@ connectDB(); // Move this up before starting the server
 
 // Configure CORS
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://universe-frontend-zoi9.onrender.com",
   credentials: true,
 }));
 
