@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://universe-backend-2yh9.onrender.com",
 });
 
 // Automatically attach the token from localStorage

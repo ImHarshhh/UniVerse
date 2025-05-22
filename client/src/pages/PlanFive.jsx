@@ -5,11 +5,11 @@ import qrCode from '../assets/qr-45.jpg';
 const PlanFive = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const increaseAnonPostLimit = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/users/me', {
+      const res = await fetch(`${apiBaseUrl}/api/users/me`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,

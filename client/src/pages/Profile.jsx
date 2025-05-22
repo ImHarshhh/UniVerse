@@ -5,7 +5,7 @@ const Profile = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const [user, setUser ] = useState(null);
   const [posts, setPosts] = useState([]);
-
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -20,7 +20,7 @@ const Profile = () => {
         const data = await res.json();
         setUser (data);
 
-        const postRes = await fetch(`http://localhost:5000/api/posts/user/${data._id}`, {
+        const postRes = await fetch(`${apiBaseUrl}/api/posts/user/${data._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

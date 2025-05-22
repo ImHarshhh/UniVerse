@@ -9,7 +9,7 @@ const PostForm = () => {
   const [anonPostLimit, setAnonPostLimit] = useState(3); // Initialize with a default value
   const navigate = useNavigate();
   const anonLeft = anonPostLimit - anonPostCount;
-
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const fetchUserInfo = async () => {
       const token = localStorage.getItem("token");
@@ -19,7 +19,7 @@ const PostForm = () => {
       }
 
       try {
-        const res = await axios.get("http://localhost:5000/api/users/me", {
+        const res = await axios.get(`${apiBaseUrl}/api/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +45,7 @@ const PostForm = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/posts",
+        `${apiBaseUrl}/api/posts`,
         { content, anonymous: isAnonymous },
         {
           headers: { Authorization: `Bearer ${token}` },

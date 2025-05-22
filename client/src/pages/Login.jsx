@@ -6,11 +6,11 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("http://localhost:5000/api/auth/login", {
+      const { data } = await axios.post(`${apiBaseUrl}/api/auth/login`, {
         email,
         password,
       });

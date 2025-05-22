@@ -5,6 +5,7 @@ import { getCurrentUser } from "../services/authServices";
 import PostCard from "../components/PostCard";
 
 const Home = () => {
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const [posts, setPosts] = useState([]);
   const [commentInputs, setCommentInputs] = useState({});
   const [error, setError] = useState(null);
@@ -30,7 +31,7 @@ const Home = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/posts", {
+      const res = await axios.get(`${apiBaseUrl}/api/posts`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       setPosts(res.data);
@@ -48,7 +49,7 @@ const Home = () => {
   const handleLike = async (postId) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/posts/${postId}/like`,
+        `${apiBaseUrl}/api/posts/${postId}/like`,
         {},
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );
@@ -76,7 +77,7 @@ const Home = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/posts/${postId}/comment`,
+        `${apiBaseUrl}/api/posts/${postId}/comment`,
         { text: commentText },
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );
