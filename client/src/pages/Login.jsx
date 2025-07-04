@@ -1,23 +1,34 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { login } from "../services/authServices";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+    
     try {
-      const { data } = await axios.post(`${apiBaseUrl}/api/auth/login`, {
-        email,
-        password,
-      });
-      localStorage.setItem("token", data.token);
-      navigate("/");
+      const data = await login({ email, password });
+      console.log("Login successful:", data);
+      
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        setError("No token received from server");
+      }
     } catch (error) {
-      console.error(error.response?.data?.message || "Login failed");
+      console.error("Login error:", error);
+      setError(error.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -214,8 +225,13 @@ const Login = () => {
                   required
                 />
               </div>
-              <button className="button login__submit" type="submit">
-                <span className="button__text">Log In Now</span>
+              {error && (
+                <div style={{ color: "#ff6b6b", textAlign: "center", marginTop: "10px", fontSize: "14px" }}>
+                  {error}
+                </div>
+              )}
+              <button className="button login__submit" type="submit" disabled={loading}>
+                <span className="button__text">{loading ? "Logging in..." : "Log In Now"}</span>
                 <i className="button__icon fas fa-chevron-right"></i>
               </button>
             </form>

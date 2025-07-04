@@ -1,24 +1,29 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { signup } from "../services/authServices";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+    
     try {
-      await axios.post(`${apiBaseUrl}/api/auth/signup`, {
-        username,
-        email,
-        password,
-      });
+      await signup({ username, email, password });
+      console.log("Signup successful");
       navigate("/login");
     } catch (error) {
-      console.error(error.response?.data?.message || "Signup failed");
+      console.error("Signup error:", error);
+      setError(error.response?.data?.message || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

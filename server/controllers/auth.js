@@ -3,25 +3,19 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Generate JWT Token
-// ORIGINAL: const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-
-// TEMPORARY CHANGE FOR DEBUGGING: Hardcode the secret to test if process.env.JWT_SECRET is the issue
 const generateToken = (id) => {
-    // IMPORTANT: REPLACE THIS WITH YOUR ACTUAL JWT_SECRET FROM YOUR .env FILE
-    const tempSecret = "ccec080928a33eaa9935e6cadd63dd4cb1abc93dd192cbc8f394e934ff0e663c4af271360c9c32e1ade2b5c1990897971446fb3820a064e66cec93f4f1bdea5d"; 
+    if (!process.env.JWT_SECRET) {
+        console.error("JWT_SECRET is not defined in environment variables");
+        throw new Error("JWT_SECRET is not configured");
+    }
     
-    // Add logging to see what's happening
-    console.log("Attempting to generate token...");
-    console.log("Secret length:", tempSecret ? tempSecret.length : 'undefined'); // Log secret length to confirm it's there
-    console.log("User ID for token:", id);
-
     try {
-        const token = jwt.sign({ id }, tempSecret, { expiresIn: '30d' });
-        console.log("Token successfully generated:", token); // Log the generated token
+        const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+        console.log("Token successfully generated for user:", id);
         return token;
     } catch (error) {
-        console.error("Error generating token (auth.js):", error.message); // Log any error from jwt.sign
-        return undefined; // Ensure it returns undefined if an error occurs
+        console.error("Error generating token:", error.message);
+        throw error;
     }
 };
 
@@ -99,5 +93,17 @@ export const login = async (req, res) => {
     } catch (err) {
         console.error("Login Error:", err);
         res.status(500).json({ message: "Server error, please try again later." });
+    }
+};
+
+// Logout Controller
+export const logout = async (req, res) => {
+    try {
+        // Clear the token from cookies if it exists
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error) {
+        console.error('Logout error:', error);
+        res.status(500).json({ message: 'Server error during logout' });
     }
 };
