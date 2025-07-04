@@ -16,9 +16,14 @@ const Signup = () => {
     setLoading(true);
     
     try {
-      await signup({ username, email, password });
+      const data = await signup({ username, email, password });
       console.log("Signup successful");
-      navigate("/login");
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        setError("No token received from server");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       setError(error.response?.data?.message || "Signup failed. Please try again.");
