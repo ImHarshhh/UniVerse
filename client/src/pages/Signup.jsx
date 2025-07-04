@@ -26,7 +26,13 @@ const Signup = () => {
       }
     } catch (error) {
       console.error("Signup error:", error);
-      setError(error.response?.data?.message || "Signup failed. Please try again.");
+      let message = "Signup failed. Please try again.";
+      if (error.response && error.response.data && error.response.data.message) {
+        message = error.response.data.message;
+      } else if (error.message) {
+        message = error.message;
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }

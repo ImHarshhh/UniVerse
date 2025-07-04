@@ -19,8 +19,9 @@ VITE_APP_API_BASE_URL=https://universe-backend-zoi9.onrender.com
 Create a file named `.env` in the `server` directory with:
 ```
 JWT_SECRET=ccec080928a33eaa9935e6cadd63dd4cb1abc93dd192cbc8f394e934ff0e663c4af271360c9c32e1ade2b5c1990897971446fb3820a064e66cec93f4f1bdea5d
-MONGODB_URI=your_mongodb_connection_string_here
+MONGO_URI=your_mongodb_connection_string_here
 ```
+**Note:** The variable must be named `MONGO_URI` (not `MONGODB_URI`) for the backend to connect to the database. Update this on Render as well as in your local `.env` file if needed.
 
 ## Commands to Run:
 
@@ -30,7 +31,7 @@ Go to your Render dashboard and add these environment variables to your backend 
 
 **Backend Environment Variables:**
 - `JWT_SECRET`: `ccec080928a33eaa9935e6cadd63dd4cb1abc93dd192cbc8f394e934ff0e663c4af271360c9c32e1ade2b5c1990897971446fb3820a064e66cec93f4f1bdea5d`
-- `MONGODB_URI`: Your MongoDB connection string
+- `MONGO_URI`: Your MongoDB connection string
 
 **Frontend Environment Variables:**
 - `VITE_APP_API_BASE_URL`: `https://universe-backend-zoi9.onrender.com`
@@ -40,7 +41,7 @@ Go to your Render dashboard and add these environment variables to your backend 
 ```bash
 # Commit and push your changes
 git add .
-git commit -m "Fix authentication issues"
+git commit -m "Fix authentication issues and update env variable names"
 git push origin main
 ```
 
